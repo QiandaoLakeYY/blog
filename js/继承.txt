@@ -21,11 +21,128 @@ JS中继承实现方式
 
     function person1 (sex, age, name, career) {
         Person.call(this, sex, age)
+        this.name = name
+        this.career = career
     }
 
     function person2 (sex, age, name, career) {
-        Person.call(this.sex, age)
+        Person.call(this, sex, age)
+        this.name = name
+        this.career = career
     }
+
+    person1.prototype = Person
+    person2.prototype = Person
 
     let person1Obj = new person1 ('male', 20, 'bob', 'student')
     let person2Obj = new person2 ('female', 25, 'alice', 'doctor')
+    console.log(person1Obj)
+    console.log(person2Obj)
+
+    分析：通过构造函数和this机制来实现
+
+    补充：如果有些公共的东西是定值，则把该属性（可以是方法）添加到原型链上
+    Person.prototype.type = 'animal'
+    并把person1,person2 的 prototype指向Person.prototype
+    同时把person1.prototype.constructor指向person1，因为在改变person1.prototype的时候也改变了constructor，但这个不应该变
+    person2同理
+
+    这样person1Obj,person2Obj就都会有type这个属性，且都为animal
+
+    function Person (sex, age) {
+        this.sex = sex
+        this.age = age
+    }
+
+    function person1 (sex, age, name, career) {
+        Person.call(this, sex, age)
+        this.name = name
+        this.career = career
+    }
+
+    function person2 (sex, age, name, career) {
+        Person.call(this, sex, age)
+        this.name = name
+        this.career = career
+    }
+
+    Person.prototype.type = 'animal'
+
+    person1.prototype = Person.prototype
+    person2.prototype = Person.prototype
+    person1.prototype.constructor = person1
+    person2.prototype.constructor = person2
+
+    let person1Obj = new person1 ('male', 20, 'bob', 'student')
+    let person2Obj = new person2 ('female', 25, 'alice', 'doctor')
+
+    console.log(person1Obj)
+    console.log(person2Obj)
+
+ES6的实现方式
+    切记，ES6的实现方式不过是一种语法糖，具体的原理还是通过原型来实现
+
+    class Person {
+        constructor (sex, age) {
+            this.sex = sex
+            this.age = age
+        }
+    }
+
+    class person1 extends Person{
+        constructor (sex, age, name, career) {
+            super(sex, age)
+            this.name = name
+            this.career = career
+        }
+    }
+
+    class person2 extends Person{
+        constructor (sex, age, name, career) {
+            super(sex, age)
+            this.name = name
+            this.career = career
+        }
+    }
+
+    let person1Obj = new person1('male', 20, 'bob', 'student')
+    let person2Obj = new person2('female', 25, 'alice', 'doctor')
+
+    console.log(person1Obj)
+    console.log(person2Obj)
+
+    加上共有的属性type
+    class Person {
+        constructor (sex, age) {
+            this.sex = sex
+            this.age = age
+        }
+        type () {
+            return 'animal'
+        }
+    }
+
+    class person1 extends Person {
+        constructor (sex, age, name, career) {
+            super(sex, age) // 一定要先写super
+            this.name = name
+            this.career = career
+        }
+    }
+
+    class person2 extends Person {
+        constructor (sex, age, name, career) {
+            super(sex, age)
+            this.name = name
+            this.career = career
+        }
+    }
+
+    let person1Obj = new person1('male', 20, 'bob', 'student')
+    let person2Obj = new person2('female', 25, 'alice', 'doctor')
+    console.log(person1Obj)
+    console.log(person2Obj)
+    console.log(person1Obj.type())
+    console.log(person2Obj.type())
+
+    注：通过两种方式对比，es6只是语法糖，写起来更加方便，直观
