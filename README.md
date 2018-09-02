@@ -17,3 +17,4 @@ koa源码分析
    https://github.com/QiandaoLakeYY/blog/pull/5
    
 js继承
+  https://github.com/QiandaoLakeYY/blog/pull/6
