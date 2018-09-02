@@ -15,3 +15,5 @@ koa源码分析
 
 数组方法总结
    https://github.com/QiandaoLakeYY/blog/pull/5
+   
+js继承
