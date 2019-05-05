@@ -20,3 +20,4 @@ js继承
   https://github.com/QiandaoLakeYY/blog/pull/6
   
 模块化总结
+  https://github.com/QiandaoLakeYY/blog/issues/7
